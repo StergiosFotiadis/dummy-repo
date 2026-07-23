@@ -1,14 +1,18 @@
+# Existing vulnerabilities 1-3 (unchanged placeholder)
+# VULNERABILITY 1: SQL Injection
 import sqlite3
+conn = sqlite3.connect(':memory:')
+user_input = "' OR '1'='1"
+conn.execute("SELECT * FROM users WHERE name = '" + user_input + "'")
 
-# VULNERABILITY 1: Hardcoded API Key / Credentials
-AWS_ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE"
-AWS_SECRET_ACCESS_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
-DB_PASSWORD = "supersecretpassword123!"
+# VULNERABILITY 2: Hardcoded Credentials
+password = "supersecret123"
 
-def get_user(username: str):
-    # VULNERABILITY 2: SQL Injection
-    conn = sqlite3.connect("users.db")
-    cursor = conn.cursor()
-    query = f"SELECT * FROM users WHERE username = '{username}'"
-    cursor.execute(query)
-    return cursor.fetchall()
+# VULNERABILITY 3: Command Injection
+import os
+os.system("ls " + user_input)
+
+# VULNERABILITY 4: Insecure Deserialization
+import pickle
+fake_payload = b"\x80\x04\x95\x1a\x00\x00\x00\x00\x00\x00\x00\x8c\x08__main__\x94\x8c\x04fake\x94\x93\x94)\x81\x94."
+data = pickle.loads(fake_payload)
